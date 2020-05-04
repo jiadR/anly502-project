@@ -29,7 +29,7 @@ kill4 = pd.read_csv(path4, header=0)
 kill = pd.concat([kill0,kill1,kill2,kill3,kill4],ignore_index=True)
 
 kill = kill.drop('killer_name',axis=1)
-#kill = kill.drop('match_id',axis=1)
+kill = kill.drop('match_id',axis=1)
 kill = kill.drop('victim_name',axis=1)
 
 kill.head(10)
@@ -41,13 +41,13 @@ victim_x_s = victim_x_df.values.ravel('F')
 print(victim_x_s)
 
 def killer_victim_df_maker(kill_0):
-    #挑出地图中击杀和被杀玩家的坐标
+    #choose the position data 
     df = edf
     victim_x_df = df.filter(regex = 'victim_position_x')
     victim_y_df = df.filter(regex = 'victim_position_y')
     killer_x_df = df.filter(regex = 'killer_position_x')
     killer_y_df = df.filter(regex = 'killer_position_y')
-    #ravel()将多维矩阵变成一维
+    #ravel()the matrix
     victim_x_s = pd.Series(victim_x_df.values.ravel('F'))
     victim_y_s = pd.Series(victim_y_df.values.ravel('F'))
     killer_x_s = pd.Series(killer_x_df.values.ravel('F'))
@@ -71,9 +71,12 @@ print(len(ekdf), len(evdf))
 plot_data_ev = evdf[['x','y']].values
 plot_data_ek = ekdf[['x','y']].values
 
-
+# transcribe location data to image size
 plot_data_ev = plot_data_ev * 4040 /800000
 plot_data_ek = plot_data_ek * 4040 /800000
+# Check the position dataset
+print(plot_data_ev)
+print(plot_data_ek)
 
 def heatmap(x, y, s, bins = 100):
     heatmap, xedges, yedges = np.histogram2d(x, y, bins = bins)
@@ -117,7 +120,7 @@ def divbutnotbyzero(a, b):
         for j, el in enumerate(row):
             if el == 0:
                 c[i][j] = a[i][j]
-            else:
+            else: # got the kill/death ratio
                 c[i][j] = a[i][j]/el
     return c
 
@@ -134,3 +137,4 @@ ax.set_xlim(0,4096); ax.set_ylim(0, 4096)
 ax.imshow(bg)
 ax.imshow(colors, extent = extent, origin = 'lower', cmap = cm.rainbow, alpha = 0.5)
 plt.gca().invert_yaxis()
+plt.title('Kill/Death ratio in Erangel')
