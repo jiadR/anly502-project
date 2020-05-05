@@ -29,6 +29,15 @@ https://github.com/jiadR/anly502-project
 Combining the file together is the first step.
 After dropping the missing value, the aggregate file contains 67369231 rows of data. 
 
+![](anly502-project/pic/1.1.png)
+(Figure 1.1 the Schema of aggregate data)
+
+The unused variables like date, macth_id, player_name and team_id were all dropped because they are not useful for the analysis part.
+Some variables’ data type should be changed according to figure 1.1, the schema of the data. ‘player_dist_ride’ and ‘player_dist_walk’ means the distance the player walks or rides in the game, so they should be changed into integer type. ‘player_survive_time’ here also should be changed into integer type because it is the time the player survived in the game.
+
+
+
+
 
 
 
