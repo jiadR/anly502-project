@@ -98,8 +98,90 @@ Figure 2.5 Boxplot of weapons and time)
 Figure 2.5 shows different survival time of different weapons. The difference of time between weapons is obvious from this plot. In the machine learning part,  the recommendation of weapons will be discussed in more detail. 
 
 
+##Heatmap
 
+In order to help players decide their land location and route during the game to gain a better rank, we use the feature kill position and death position in map erangel in the death dataset to make three heat-maps.
 
+![](pic/t3.1.png)
+(Table 3.1 death and kill positions in dataset) 
+
+![](pic/t3.2.png)
+(Table 3.2 death and kill positions after scaling)
+
+![](pic/t3.3.png)
+(Table 3.3 amount of Death positions and kill positions)
+
+Three tables above are the summary of the data we used, the original location data is not suitable for the image that was provided, so we transcribe it to image size. 
+
+![](pic/3.1.png)
+
+(Figure 3.1 the Death Rate in map “Erangel”)
+
+The Figure 3.1 above is the Death Rate in the map “Erangel”. The red points are the locations where have the highest death rate. Pochinki, Georgopol, Roznok and Sosnovka Military Base are the four places where the players die the most. Novorepnoye, Severny, Gatka, Yasnaya Polyana are also dangerous locations to land. That means, if the player is new to this game, it’s essential for them to avoid landing or passing those areas. 
+
+![](pic/3.2.png)
+
+(Figure 3.2 Kill Rate in the map “Erangel”)
+
+And Figure 3.2 is the kill rate in this map, the large red points and the blue points are the locations where players kill the most. If a player wants to take risks to gain a good kill ratio, Pochinki, Georgopol, Roznok and Sosnovka Military Base where have the highest death rate, also provide the highest kill rate. 
+
+![](pic/3.3.png)
+
+(Figure 3.3 kill/death ratio in the map “Erangel”)
+
+In general, two figures should be nearly the same, since the killers are usually around the dead players. Then we try to investigate the kill/death ratio to help players who are skilled in this game to gain a better KDA(kill/death/assistance ratio).
+The figure 3.3 above is the kill/death ratio in the map “Erangel”. The red points are the places where the kill rate is much higher than death rate. Therefore, the "hot zones" are not the only places for getting a good kill/death ratio. Anywhere that seeing red is a pretty good place for skilled players to land. 
+The three plots above are good tools for both new players and skilled players to choose suitable land locations and gain an excellent rank and KDA.
+
+## Machine learning
+
+By using machine learning techniques, we want to answer two questions, what features play important roles in predicting placement and what weapons are the best to use based on the data.
+
+### Predicting placement
+In order to predict a player’s placement or rank in a game, given his or her previous game statistics, we applied multiple regression models, Linear Regression, Decision Tree Regression, and Gradient Boosted Tree Regression. All of the models use every feature in the  aggregate dataset, excluding survival time, as placement is ranked by survival time. For linear regression, the result is shown as follows.
+
+![](pic/4.1.png)
+
+(Figure 4.1 Results of the regression model)
+
+To evaluate the model, we split the whole dataset into train and test sets by 70 : 30 ratio, and calculated the Root Mean Squared Error and R-squared. The RMSE of Linear Regression model is 13, and the R-squared is 56.5%
+Given the undesired performance of the Linear Regression model, we then fitted a Decision Tree Regression model. This time the RMSE reduced to 7. But most importantly, we can extract all the feature importance and understand what plays an important role in placement. From the Decision Tree Regression model, we found two features, “distance walked” and “party size” can explain in total almost 98% of one’s placement. Combined with the output formula from the Linear Regression model, we found that “distance walked” has a negative relationship to placement, whereas “party size” has a positive relationship, which means the shorter one player walks in the game, and the more players in his or her party, the earlier the player would get taken out of the game. To interpret the result with the previous heatmaps, we speculated that the reason for the negative relationship between “distance walked” and placement is that most players get killed in condensed areas, which are the popular sites of landing, given the sufficient amount of loots. Although the loot is plenty in these areas, one would have to take the risk of being killed by players camping in the corners and losing in the early game.
+In order to further improve the RMSE, we also implemented a Gradient Boosted Tree Regression model. However, the GBT model reached the same performance as the Decision Tree model does. Hence, it is not further discussed in the report.
+
+### Predicting weapon
+To study which weapon can effectively kill the enemy at a given distance, a multinomial logistic regression model is applied to the Deaths dataset. The data was split into a training set and a testing set with a 7:3 ratio. The target variable is “killed_by”, which is the weapon used. All the other variables in the Deaths dataset are used as predicting variables. This model is expected to be used to make weapon recommendations for players based on their location, enemy distance and game time. However, the performance of the result was not as it was expected. The accuracy of the training set is 18.2% and the accuracy of the testing set is only 9.3%. This can not be a good model to do the prediction. 
+
+![](pic/vis4.png)
+
+(Figure 4.2 Boxplot of weapons and distance)
+To find out what could cause such bad performance, we further investigated the dataset and found several problems that could lead to such a result. First, by looking at Figure 4.2, we can see that the effective range of the weapons are very close except for some melee weapons. The ability of the weapons is balanced in the game, there is not much difference in their attacking range. Therefore, the model can not accurately distinguish them. The other problem is there is not enough feature in the dataset to be used in the prediction. Some more features such as the category and the using frequency could be useful to increase the model accuracy.
+
+# Results/Conclusion
+
+Based on the machine learning analysis, the decision tree model has relatively higher accuracy and better performance.  The player can predict the placement according to his or her history information in the game by this model. ‘Party_size’ and ‘Distance_walked’ are two important variables for this game,if the player wants to win the game, the size for the party and walking distance during the game should be carefully considered. What’s more, from the three heatmaps, the new players can avoid the points and areas with high deaths rate, some skilled players can arrange their paths during the game and choose the suitable points to hide. 
+Besides, game companies can appropriately change and update the game’s balance based on the model and heatmaps. For example, if some weapons have extreme performance, suitable weakening should be considered to ensure the players’ game experience. 
+
+# Future work
+
+The model for weapons recommendation only has very low accuracy and poor performance. The main reason for this may be the high randomness in the game. The weapons or equipment that the players can get are randomly appeared in the ground, so the players may not have so many choices.  However, considering the categorial of the weapons and frequency may help to improve the model. 
+The placement prediction model can also be improved, and more detailed information may be able to be reflected in the heatmaps. Future work will focus on the parts.
+
+# Bibliography/References
+
+dataset reference link:
+https://www.kaggle.com/skihikingkevin/pubg-match-deaths
+
+Wikipedia about PUBG:
+https://en.wikipedia.org/wiki/PlayerUnknown%27s_Battlegrounds
+
+# Division of labor
+Xiangyu Hu: Data Clean EDA 
+
+Xiwen Zhang : Heatmap analysis
+
+Dongru Jia : Placement Prediction
+
+Ning Hu: Weapons Recommendation
 
 
 
