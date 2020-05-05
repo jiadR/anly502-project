@@ -154,6 +154,7 @@ To study which weapon can effectively kill the enemy at a given distance, a mult
 ![](pic/4.2.png)
 
 (Figure 4.2 Boxplot of weapons and distance)
+
 To find out what could cause such bad performance, we further investigated the dataset and found several problems that could lead to such a result. First, by looking at Figure 4.2, we can see that the effective range of the weapons are very close except for some melee weapons. The ability of the weapons is balanced in the game, there is not much difference in their attacking range. Therefore, the model can not accurately distinguish them. The other problem is there is not enough feature in the dataset to be used in the prediction. Some more features such as the category and the using frequency could be useful to increase the model accuracy.
 
 # Results/Conclusion
