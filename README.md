@@ -29,7 +29,8 @@ https://github.com/jiadR/anly502-project
 Combining the file together is the first step.
 After dropping the missing value, the aggregate file contains 67369231 rows of data. 
 
-![](anly502-project/pic/1.1.png)
+![image](anly502-project/pic/1.1.png)
+
 (Figure 1.1 the Schema of aggregate data)
 
 The unused variables like date, macth_id, player_name and team_id were all dropped because they are not useful for the analysis part.
