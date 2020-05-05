@@ -151,7 +151,7 @@ In order to further improve the RMSE, we also implemented a Gradient Boosted Tre
 ### Predicting weapon
 To study which weapon can effectively kill the enemy at a given distance, a multinomial logistic regression model is applied to the Deaths dataset. The data was split into a training set and a testing set with a 7:3 ratio. The target variable is “killed_by”, which is the weapon used. All the other variables in the Deaths dataset are used as predicting variables. This model is expected to be used to make weapon recommendations for players based on their location, enemy distance and game time. However, the performance of the result was not as it was expected. The accuracy of the training set is 18.2% and the accuracy of the testing set is only 9.3%. This can not be a good model to do the prediction. 
 
-![](pic/vis4.png)
+![](pic/4.2.png)
 
 (Figure 4.2 Boxplot of weapons and distance)
 To find out what could cause such bad performance, we further investigated the dataset and found several problems that could lead to such a result. First, by looking at Figure 4.2, we can see that the effective range of the weapons are very close except for some melee weapons. The ability of the weapons is balanced in the game, there is not much difference in their attacking range. Therefore, the model can not accurately distinguish them. The other problem is there is not enough feature in the dataset to be used in the prediction. Some more features such as the category and the using frequency could be useful to increase the model accuracy.
